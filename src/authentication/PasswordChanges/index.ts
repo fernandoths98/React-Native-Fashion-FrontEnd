@@ -1,0 +1,1 @@
+export { PasswordChanges } from './PasswordChanges';
