@@ -19,7 +19,7 @@ export const FavoritesOutfits = () => {
             <AntDesign
             name='heart'
             size={26} 
-            color="yellow"/>
+            color="red"/>
         </FavouriteButton>
     )
 

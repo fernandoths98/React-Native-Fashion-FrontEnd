@@ -34,6 +34,13 @@ export const Login = ({ navigation }: AuthNavigationProps<"Login">) => {
     //   "password": data.password
     // })
 
+    const stringData = {
+      email: data.email,
+      password: data.password
+    }
+
+    console.log(stringData)
+
     //keyboardavoidingkey
   // Method pemanggilan axios
   //  await axios({
@@ -51,19 +58,12 @@ export const Login = ({ navigation }: AuthNavigationProps<"Login">) => {
   //   })
 
     // await axios
-    //   .post("http://192.168.100.11:3000/api/login", {
-    //     data:stringData
-    //   },{
-    //     headers: {
-    //       'Content-Type': 'application/json'
-    //     },
-    //   })
+    //   .post("http://192.168.100.11:3000/api/login", stringData)
     //   .then((data) => {
     //     navigation.navigate("Home");
     //     console.log(data);
     //   })
     //   .catch((err) => {
-    //     console.log("oaskdoakows", err);
     //     console.log(err);
     //   });
     navigation.navigate("Home");

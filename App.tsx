@@ -7,11 +7,11 @@ import { AuthenticationNavigator } from "./src/authentication";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import {HomeNavigator} from './src/Home'
+import { HomeNavigator } from "./src/Home";
 import { AppRoutes } from "./src/components/Navigation";
+import { ProductsContextProvider } from "./src/utility/product.context";
 
 // const assets = [...authenticationAssets]
-
 
 const AppStack = createStackNavigator<AppRoutes>();
 
@@ -27,21 +27,23 @@ export default function App() {
     <ThemeProvider {...{ theme }}>
       <LoadAssets {...{ fonts }}>
         <SafeAreaProvider>
-          <AppStack.Navigator>
-            <AppStack.Screen
-              options={{ headerShown: false }}
-              name="Authentication"
-              component={AuthenticationNavigator}
-            />
+          <ProductsContextProvider>
+            <AppStack.Navigator>
+              <AppStack.Screen
+                options={{ headerShown: false }}
+                name="Authentication"
+                component={AuthenticationNavigator}
+              />
 
-            <AppStack.Screen
-              options={{
-                headerShown: false,
-              }}
-              name="Home"
-              component={HomeNavigator}
-            />
-          </AppStack.Navigator>
+              <AppStack.Screen
+                options={{
+                  headerShown: false,
+                }}
+                name="Home"
+                component={HomeNavigator}
+              />
+            </AppStack.Navigator>
+          </ProductsContextProvider>
         </SafeAreaProvider>
       </LoadAssets>
     </ThemeProvider>
