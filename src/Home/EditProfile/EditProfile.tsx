@@ -1,6 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { DrawerActions } from "@react-navigation/native";
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Dimensions, View } from "react-native";
 import { HomeRoutes } from "../../components/Navigation";
@@ -10,6 +10,7 @@ import { Tabs } from "./Tabs";
 import * as yup from "yup";
 import { TextInput } from "../../authentication/components/Form/TextInput";
 import { Button } from "../../components";
+import { UserContext} from "../../utility/user/user.context";
 
 const { width } = Dimensions.get("window");
 const tabs = [
@@ -39,6 +40,15 @@ export const EditProfile = ({ navigation }: HomeRoutes<"EditProfile">) => {
     navigation.navigate("EditProfile");
   };
 
+  const {getUserId}: any = useContext(UserContext)
+  const [user, setUser] = useState();
+
+  useEffect(async () => {
+    const user = await getUserId();
+    console.log(user)
+    setUser(user);
+  })
+
   return (
     <Box flex={1} backgroundColor="white">
       <Box flex={0.5} backgroundColor="white">
@@ -49,7 +59,7 @@ export const EditProfile = ({ navigation }: HomeRoutes<"EditProfile">) => {
           right={0}
           bottom={0}
           borderBottomRightRadius="xl"
-          backgroundColor="secondary"
+          backgroundColor="bgYs"
           flexDirection="row"
           justifyContent="space-between"
           paddingTop="s"
@@ -59,7 +69,7 @@ export const EditProfile = ({ navigation }: HomeRoutes<"EditProfile">) => {
             size={24}
             name="menu"
             color="white"
-            backgroundColor="secondary"
+            backgroundColor="bgYs"
             onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
           />
           <Text color="white">EDIT PROFILE</Text>
@@ -67,7 +77,7 @@ export const EditProfile = ({ navigation }: HomeRoutes<"EditProfile">) => {
             size={24}
             name="user"
             color="white"
-            backgroundColor="secondary"
+            backgroundColor="bgYs"
           />
         </Box>
       </Box>

@@ -1,47 +1,61 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
-import { Card } from "react-native-paper";
-import { Text } from "../../components";
+import { View, StyleSheet, Dimensions, Alert } from "react-native";
+import { Card, IconButton } from "react-native-paper";
+import { Text, ButtonCart } from "../../components";
 import { FavoritesOutfits } from "../Favorites/Favorites.components";
+import Carousel from "react-native-snap-carousel";
+import { Box } from "../../components/Theme";
+
+export const SLIDER_WIDTH = Dimensions.get("window").width / 2;
+export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.81);
 
 export const OutfitInfo = ({ value }) => {
-  // const {
-  //   name = "Baju Yumster",
-  //   photos = [
-  //     "https://play-lh.googleusercontent.com/wNAQC4JIqMIYUo5-txxS-qIEMGoqbckYqpD-1Jxpd2EvmBmd6nF7hga758g6NKnqqyJe=s180-rw",
-  //   ],
-  //   description = "Bajunya Bagus",
-  // } = value;
+  //console.log(value.item);
 
-  console.log(value);
-  
+  return (
+    <Card elevation={1} style={styles.card}>
+      <FavoritesOutfits value={value} />
+      <Card.Cover
+        style={styles.cover}
+        source={{
+          uri:
+            "http://192.168.100.11:3000/api/product/image/" +
+            value.item.image_product[0].image_filename,
+        }}
+      />
 
-  return(
-      <Card
-      elevation={5} style={styles.card}>
-        <FavoritesOutfits />
-          <Card.Cover style={styles.cover} source={{uri: value.item.image_product}}/> //uri: "endpoint" + filename
-          <Text variant="title1" style={styles.text}>{value.item.title_product}</Text>
-          <Text variant="title2" style={styles.text}>Size : {value.item.size_product}</Text>
-          <Text variant="body" style={styles.text}>{value.item.description}</Text>
-      </Card>
-  )
+      <Text variant="title3" style={styles.text}>
+        {value.item.title_product}
+      </Text>
+      <Text variant="title2" style={styles.text}>
+        Rp. {value.item.price}
+      </Text>
+      
+    </Card>
+  );
 };
 
 const styles = StyleSheet.create({
-    card: {
-        marginTop: 10,
-        marginLeft: 10,
-        marginRight: 10,
-        backgroundColor: "white",
-        borderRadius: 10,
-    }, 
-    cover: {
-        padding: 10,
-        backgroundColor: "white",
-    },
+  card: {
+    alignItems: "center",
+    marginTop: 5,
+    padding: 10,
+    marginBottom: 10,
+    backgroundColor: "white",
+    borderRadius: 10,
+    margin: 10,
+  },
+  cover: {
+    marginTop: 10,
+    justifyContent: "center",
+    
+    width: ITEM_WIDTH,
+    height: 300,
+    borderRadius: 30,
+  },
 
-    text: {
-        padding: 10,
-    }
-})
+  text: {
+    marginLeft: 10,
+    padding: 5,
+  },
+});

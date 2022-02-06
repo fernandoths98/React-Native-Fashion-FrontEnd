@@ -1,25 +1,36 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import styled from "styled-components/native";
 import {TouchableOpacity} from "react-native";
 import {AntDesign} from "@expo/vector-icons";
+import { FavouritesContext } from '../../utility/favourites/favourites.context';
 
 const FavouriteButton = styled(TouchableOpacity)`
   position: absolute;
-  right: 0;
+  right: -20;
   top: 0;
-  margin: 10px;
+  margin: 15px;
   z-index: 10;
 `;
 
-export const FavoritesOutfits = () => {
-    // const {favorites, setFavorite } = useContext([]);
+export const FavoritesOutfits = ({outfit}: any) => {
+    const { favourites, addToFavourites, removeFromFavourites }: any = useContext(FavouritesContext);
+
+    // const isFavouritesToggle = favourites.find((r) => r.id === outfit.id);
+
+    const isFavouritesToggle = useState(false)
 
     return (
-        <FavouriteButton>
+        <FavouriteButton 
+        onPress={() => {
+            !isFavouritesToggle
+            ? addToFavourites(outfit)
+            : removeFromFavourites(outfit)
+        }}
+        >
             <AntDesign
-            name='heart'
+            name={isFavouritesToggle ? "heart" : "hearto"}
             size={26} 
-            color="red"/>
+            color={isFavouritesToggle ? "red" : "black"}/>
         </FavouriteButton>
     )
 

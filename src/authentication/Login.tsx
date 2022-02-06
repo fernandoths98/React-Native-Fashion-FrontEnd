@@ -1,5 +1,4 @@
-import React from "react";
-import { View } from "react-native";
+import React, { useContext } from "react";
 import { Button, Container, Text } from "../components";
 import { Box } from "../components/Theme";
 import { TextInput } from "./components/Form/TextInput";
@@ -8,18 +7,18 @@ import { useForm, Controller } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-import { SocialLogin } from "./components/SocialLogin";
-import {
-  AuthNavigationProps,
-} from "../components/Navigation";
+import { AuthNavigationProps } from "../components/Navigation";
 import { Footer } from "./components/Footer";
 import { ForgotPassword } from "./ForgotPassword/ForgotPassword";
-import { CompositeNavigationProp } from "@react-navigation/native";
-import { DrawerNavigationProp } from "@react-navigation/drawer";
-import axios from "axios";
+import {
+  CommonActions
+} from "@react-navigation/native";
+import { AuthenticationContext } from "../utility/authentication/authentication.context";
 
 //AuthNavigasiProps = diambil dari navigasi untuk proses pindah page/halaman
 export const Login = ({ navigation }: AuthNavigationProps<"Login">) => {
+  const { onAuthLogin }: any = useContext(AuthenticationContext);
+
   //Validasi Form
   const schema = yup.object().shape({
     email: yup.string().email("Emailnya yang bener bos!").required(), //email("Pesan Email")
@@ -27,53 +26,22 @@ export const Login = ({ navigation }: AuthNavigationProps<"Login">) => {
   });
 
   const onSubmit = async (data: any) => {
-
-    // Deklarasi variable stringData
-    // const stringData = JSON.stringify({
-    //   "email": data.email,
-    //   "password": data.password
-    // })
-
-    const stringData = {
-      email: data.email,
-      password: data.password
-    }
-
-    console.log(stringData)
-
-    //keyboardavoidingkey
-  // Method pemanggilan axios
-  //  await axios({
-  //     method: "POST",
-  //     url: "http://192.168.100.11:3000/api/login",
-  //     headers: {
-  //       'Content-Type': 'application/json'
-  //     },
-  //       data: stringData
-  //   }).then((data) => {
-  //     navigation.navigate("Home");
-  //     console.log(data);
-  //   }).catch((err) => {
-  //     console.log(err);
-  //   })
-
-    // await axios
-    //   .post("http://192.168.100.11:3000/api/login", stringData)
-    //   .then((data) => {
-    //     navigation.navigate("Home");
-    //     console.log(data);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
-    navigation.navigate("Home");
-    console.log(axios);
+    // console.log(data);
+    await onAuthLogin(data).then(() => {
+      console.log(data);
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: "Home" }],
+        })
+      );
+    });
   };
 
   const {
     handleSubmit,
     control,
-    formState: { errors, isValid },
+    formState: { errors},
   } = useForm({
     mode: "onChange",
     resolver: yupResolver(schema),
@@ -135,7 +103,10 @@ export const Login = ({ navigation }: AuthNavigationProps<"Login">) => {
           )}
         />
         <Box flexDirection="row" justifyContent="center">
-          <Button variant="transparant" onPress={() => navigation.navigate("ForgotPassword")}>
+          <Button
+            variant="transparant"
+            onPress={() => navigation.navigate("ForgotPassword")}
+          >
             <Text color="primary"> Forgot Password </Text>
           </Button>
         </Box>

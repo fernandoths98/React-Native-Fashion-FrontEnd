@@ -9,7 +9,9 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import { HomeNavigator } from "./src/Home";
 import { AppRoutes } from "./src/components/Navigation";
-import { ProductsContextProvider } from "./src/utility/product.context";
+import { ProductsContextProvider } from "./src/utility/product/product.context";
+import { AuthenticationContextProvider } from "./src/utility/authentication/authentication.context";
+import { FavouritesContextProvider } from "./src/utility/favourites/favourites.context";
 
 // const assets = [...authenticationAssets]
 
@@ -27,23 +29,27 @@ export default function App() {
     <ThemeProvider {...{ theme }}>
       <LoadAssets {...{ fonts }}>
         <SafeAreaProvider>
-          <ProductsContextProvider>
-            <AppStack.Navigator>
-              <AppStack.Screen
-                options={{ headerShown: false }}
-                name="Authentication"
-                component={AuthenticationNavigator}
-              />
+          <AuthenticationContextProvider>
+            <FavouritesContextProvider>
+              <ProductsContextProvider>
+                <AppStack.Navigator>
+                  <AppStack.Screen
+                    options={{ headerShown: false }}
+                    name="Authentication"
+                    component={AuthenticationNavigator}
+                  />
 
-              <AppStack.Screen
-                options={{
-                  headerShown: false,
-                }}
-                name="Home"
-                component={HomeNavigator}
-              />
-            </AppStack.Navigator>
-          </ProductsContextProvider>
+                  <AppStack.Screen
+                    options={{
+                      headerShown: false,
+                    }}
+                    name="Home"
+                    component={HomeNavigator}
+                  />
+                </AppStack.Navigator>
+              </ProductsContextProvider>
+            </FavouritesContextProvider>
+          </AuthenticationContextProvider>
         </SafeAreaProvider>
       </LoadAssets>
     </ThemeProvider>

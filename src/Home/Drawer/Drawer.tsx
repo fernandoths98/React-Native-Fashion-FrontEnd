@@ -19,12 +19,6 @@ const items: DrawerItemsProps[] = [
     color: "primary",
   },
   {
-    icon: "heart",
-    label: "Favorites Outfits",
-    screen: "FavoritesOutfits",
-    color: "orange",
-  },
-  {
     icon: "user",
     label: "Edit Profile",
     screen: "EditProfile",
@@ -39,7 +33,7 @@ const items: DrawerItemsProps[] = [
   {
     icon: "settings",
     label: "Notifications Settings",
-    screen: "FavoritesOutfits",
+    screen: "NotificationSetting",
     color: "violet",
   },
   {
@@ -66,7 +60,7 @@ const Drawer = ({navigation}: any) => {
           right={0}
           bottom={0}
           borderBottomRightRadius="xl"
-          backgroundColor="secondary"
+          backgroundColor="bgYs"
           flexDirection="row"
           justifyContent="space-between"
           paddingTop="s"
@@ -76,7 +70,7 @@ const Drawer = ({navigation}: any) => {
             size={24}
             name="x"
             color="white"
-            backgroundColor="secondary"
+            backgroundColor="bgYs"
             onPress={() => navigation.dispatch(DrawerActions.closeDrawer())}
           />
           <Text color="white">MY PROFILE</Text>
@@ -84,13 +78,13 @@ const Drawer = ({navigation}: any) => {
             size={24}
             name="shopping-bag"
             color="white"
-            backgroundColor="secondary"
+            backgroundColor="bgYs"
             onPress={() => true}
           />
         </Box>
       </Box>
       <Box flex={0.8}>
-        <Box flex={1} backgroundColor="secondary" />
+        <Box flex={1} backgroundColor="bgYs" />
         <Box flex={1} backgroundColor="primary" />
         <Image
           source={require("../../components/assets/patterns/3.png")}

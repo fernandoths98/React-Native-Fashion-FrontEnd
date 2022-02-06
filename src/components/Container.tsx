@@ -27,7 +27,7 @@ export const Container = ({ children, footer, pattern }: ContainerProps) => {
   const insets = useSafeAreaInsets();
   return (
     <KeyboardAwareScrollView scrollEnabled={false}>
-      <Box height={wHeight} backgroundColor="secondary">
+      <Box height={wHeight} backgroundColor="bgYs">
         <StatusBar barStyle="light-content" />
         <Box backgroundColor="white">
           <Box
@@ -66,7 +66,7 @@ export const Container = ({ children, footer, pattern }: ContainerProps) => {
             {children}
           </Box>
         </Box>
-        <Box backgroundColor="secondary" paddingTop="m">
+        <Box backgroundColor="bgYs" paddingTop="m">
           {footer}
           {/* <Box height={insets.bottom} /> */}
         </Box>

@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useContext} from "react";
 import { Button, Container, Text } from "../components";
 import { Box } from "../components/Theme";
 import { TextInput } from "./components/Form/TextInput";
@@ -10,6 +10,7 @@ import {
   AuthNavigationProps,
 } from "../components/Navigation";
 import { Footer } from "./components/Footer";
+import { AuthenticationContext } from "../utility/authentication/authentication.context";
 
 export const SignUp = ({
   navigation,
@@ -17,14 +18,23 @@ export const SignUp = ({
   const SignUpschema = yup.object().shape({
     email: yup.string().email("Emailnya yang bener ya!").required(), //email("Pesan Email")
     password: yup.string().min(8).max(32).required("Passwordnya harus di isi"),
-    Retypedpassword: yup
+    retypedPasswords: yup
       .string()
       .required("Passwordnya harus sama yah!")
       .oneOf([yup.ref("password")], "Passwordnya tidak sama!"),
   });
-  const onSubmitSignUp = (data: any) => {
-    navigation.navigate("Login");
+
+  const {onAuthRegister}: any = useContext(AuthenticationContext);
+
+  const onSubmitSignUp = async (data: any) => {
     console.log(data);
+    await onAuthRegister(data)
+      .then(() => {
+        navigation.navigate("Login");
+      })
+      .catch((err: any) => {
+        console.log(err);
+      });
   };
 
   const {
@@ -93,7 +103,7 @@ export const SignUp = ({
         />
 
         <Controller
-          name="Retypedpassword"
+          name="retypedPasswords"
           control={control}
           render={({ field: { onChange, value } }) => (
             <TextInput
@@ -101,8 +111,8 @@ export const SignUp = ({
               placeholder="Retyped your Password"
               onChangeText={(text) => onChange(text)}
               value={value}
-              error={errors.Retypedpassword}
-              errorMessage={errors?.Retypedpassword?.message}
+              error={errors.retypedPasswords}
+              errorMessage={errors?.retypedPasswords?.message}
               autoCapitalize="none"
               autoCompleteType="password"
               returnKeyLabel="go"
