@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Alert, ScrollView } from "react-native";
 import { Button } from "../../components";
 import { Box, Text } from "../../components/Theme";
+import { TransactionContext } from "../../utility/transaction/transaction.context";
+import { UserContext } from "../../utility/user/user.context";
 import { AddCard } from "./AddCard";
 import Card, { CardModel, CardType } from "./Card";
 import { CARD_HEIGHT } from "./CardLayout";
@@ -18,6 +20,7 @@ const cards: CardModel[] = [
 
 interface CheckoutProps {
   minHeight: number;
+  cart: any;
 }
 
 interface LineItemProps {
@@ -35,15 +38,38 @@ const LineItem = ({ label, value }: LineItemProps) => {
       </Box>
       <Box>
         <Text color="primary" variant="title3">
-          ${value}
+          Rp {value}
         </Text>
       </Box>
     </Box>
   );
 };
 
-export const Checkout = ({ minHeight }: CheckoutProps) => {
+export const Checkout = ({ minHeight, cart }: CheckoutProps) => {
   const [selectedCard, setSelectedCard] = useState(cards[0].id);
+
+  const {userProfile}: any = useContext(UserContext)
+  const {addTransactionHistory}: any = useContext(TransactionContext)
+
+
+  console.log(cart);
+
+  const deliveryFee = 7500;
+  let totalPay = 0;
+  cart.forEach((item: any) => {
+    totalPay += item.price * item.quantity;
+  });
+
+  const labeltotalPay = `Total Pay: Rp. ${totalPay + deliveryFee}`;
+  const totalOrder = totalPay + deliveryFee;
+
+  const order = {
+    total_price: totalOrder,
+  }
+
+  const onSubmit = async() => {
+    await addTransactionHistory(order)
+  }
 
   return (
     <Box flex={1} backgroundColor="bgYs" style={{ paddingTop: minHeight }}>
@@ -67,16 +93,16 @@ export const Checkout = ({ minHeight }: CheckoutProps) => {
           </Text>
           <Box flexDirection="row" opacity={0.5} paddingVertical="m">
             <Box flex={1}>
-              <Text color="background">1545 Blvd. Cote-Vertu Ouest</Text>
-              <Text color="background">Montreal, Quebec</Text>
+              <Text color="background">{userProfile && userProfile.address}</Text>
+              
             </Box>
             <Box justifyContent="center" alignItems="center">
               <Text color="background">Change</Text>
             </Box>
           </Box>
-          <LineItem label="Total Items (6)" value={189.94} />
-          <LineItem label="Standard Delivery" value={12.0} />
-          <LineItem label="Total Payment" value={201.84} />
+          <LineItem label="Total Items" value={cart.length} />
+          <LineItem label="Standard Delivery" value={deliveryFee} />
+          <LineItem label="Total Payment" value={totalPay} />
         </Box>
         <Box
           paddingVertical="m"
@@ -85,9 +111,10 @@ export const Checkout = ({ minHeight }: CheckoutProps) => {
           justifyContent="flex-end"
         >
           <Button
-            label="Swipe to Pay $201.84"
+            cart={cart}
+            label={labeltotalPay}
             variant="primary"
-            onPress={() => Alert.alert("Payment Successful")}
+            onPress={() => onSubmit()}
           />
         </Box>
       </Box>

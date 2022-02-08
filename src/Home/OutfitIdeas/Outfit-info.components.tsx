@@ -19,7 +19,7 @@ export const OutfitInfo = ({ value }) => {
         style={styles.cover}
         source={{
           uri:
-            "http://192.168.100.11:3000/api/product/image/" +
+            "http://192.168.1.5:3000/api/product/image/" +
             value.item.image_product[0].image_filename,
         }}
       />

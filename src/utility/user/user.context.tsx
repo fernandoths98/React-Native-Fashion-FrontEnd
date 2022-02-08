@@ -1,29 +1,21 @@
 import { createContext, useEffect, useState } from "react";
+import { getTokenFor } from "../authentication/authentication.service";
 import { getUserById } from "./user.service";
 
 export const UserContext = createContext({});
 
 export const UserContextProvider = ({ children }: any) => {
-  const [userId, setUserID] = useState();
+  const [userProfile, setUserProfile] = useState(null);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    getUserId(userId)
-      .then((res: any) => {
-        console.log(res);
-        setUserID(res);
-      })
-      .catch((err: any) => {
-        setError(err);
-      });
-  }, []);
-
-  const getUserId = (userId) => {
-    return new Promise(async (resolve, reject) => {
-      await getUserById(userId)
+  const getUserId = async () => {
+    return new Promise<void>(async (resolve, reject) => {
+      const access_tokens = await getTokenFor("aToken");
+      await getUserById(access_tokens)
         .then((res: any) => {
-          setUserID(userId);
-          resolve(res);
+          setUserProfile(res.data);
+          // console.log(res);
+          resolve();
         })
         .catch((err) => {
           reject(err);
@@ -35,6 +27,7 @@ export const UserContextProvider = ({ children }: any) => {
     <UserContext.Provider
       value={{
         getUserId,
+        userProfile,
       }}
     >
       {children}

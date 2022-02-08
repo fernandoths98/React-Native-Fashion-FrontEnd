@@ -10,7 +10,7 @@ import { Tabs } from "./Tabs";
 import * as yup from "yup";
 import { TextInput } from "../../authentication/components/Form/TextInput";
 import { Button } from "../../components";
-import { UserContext} from "../../utility/user/user.context";
+import { UserContext } from "../../utility/user/user.context";
 
 const { width } = Dimensions.get("window");
 const tabs = [
@@ -30,6 +30,7 @@ export const EditProfile = ({ navigation }: HomeRoutes<"EditProfile">) => {
   const {
     handleSubmit,
     control,
+    reset,
     formState: { errors },
   } = useForm({
     mode: "onChange",
@@ -40,14 +41,14 @@ export const EditProfile = ({ navigation }: HomeRoutes<"EditProfile">) => {
     navigation.navigate("EditProfile");
   };
 
-  const {getUserId}: any = useContext(UserContext)
-  const [user, setUser] = useState();
+  
+  const {userProfile, getUserId }: any = useContext(UserContext);
+
+  // console.log(userProfile);
 
   useEffect(async () => {
-    const user = await getUserId();
-    console.log(user)
-    setUser(user);
-  })
+    await getUserId();
+  }, [reset]);
 
   return (
     <Box flex={1} backgroundColor="white">
@@ -93,14 +94,15 @@ export const EditProfile = ({ navigation }: HomeRoutes<"EditProfile">) => {
         />
         <Box marginVertical="s" style={{ marginTop: 50 + theme.spacing.m }}>
           <Text variant="title1" textAlign="center">
-            Fernando Teguh
+            {userProfile && userProfile.fullName}
           </Text>
           <Text variant="body" textAlign="center">
-            fernandoteguh31@gmail.com
+            {userProfile && userProfile.email}
           </Text>
         </Box>
         <Box padding="m" justifyContent="center">
           <Controller
+            defaultValue={userProfile && userProfile.email}
             name="email"
             control={control}
             render={({ field: { onChange, value } }) => (

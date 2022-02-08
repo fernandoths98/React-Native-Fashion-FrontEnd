@@ -4,10 +4,10 @@ import { DataPoint } from "./Graph";
 import { Box, Text } from "../../components/Theme";
 
 interface TransactionProps {
-  transaction: DataPoint;
+  transaction: any;
 }
 
-const Transaction = ({ transaction }: TransactionProps) => {
+const Transaction = ({ transaction}: TransactionProps) => {
   return (
     <Box
       flexDirection="row"
@@ -22,19 +22,15 @@ const Transaction = ({ transaction }: TransactionProps) => {
             marginRight="s"
             style={{ width: 10, height: 10, borderRadius: 5 }}
           />
-          <Text variant="title3">{`#${transaction.id}`}</Text>
+          <Text variant="title3">Transaction ID : {transaction.id_transaction}</Text>
         </Box>
         <Text color="info">
-          {`$${transaction.value} - ${moment(transaction.date).format(
+          {`$${transaction.total_price} - ${moment(transaction.currentDate).format(
             "MMMM DD, YYYY"
           )}`}
         </Text>
       </Box>
-      <Box>
-        <Text variant="button" color="secondary">
-          See more
-        </Text>
-      </Box>
+      
     </Box>
   );
 };

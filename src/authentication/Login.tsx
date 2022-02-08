@@ -28,7 +28,7 @@ export const Login = ({ navigation }: AuthNavigationProps<"Login">) => {
   const onSubmit = async (data: any) => {
     // console.log(data);
     await onAuthLogin(data).then(() => {
-      console.log(data);
+      // console.log(data);
       navigation.dispatch(
         CommonActions.reset({
           index: 0,

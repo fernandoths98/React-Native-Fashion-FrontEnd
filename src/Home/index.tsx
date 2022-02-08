@@ -17,13 +17,13 @@ export const HomeNavigator = () => (
     drawerStyle={{ width: DRAWER_WIDTH }}
   >
     <Drawer.Screen
-      options={{ headerShown: false }}
+      options={{ headerShown: false, unmountOnBlur: true }}
       name="OutfitIdeas"
       component={OutfitIdeas}
     />
 
     <Drawer.Screen
-      options={{ headerShown: false }}
+      options={{ headerShown: false, unmountOnBlur: true }}
       name="EditProfile"
       component={EditProfile}
     />
@@ -47,13 +47,13 @@ export const HomeNavigator = () => (
     /> */}
 
     <Drawer.Screen
-      options={{ headerShown: false }}
+      options={{ headerShown: false, unmountOnBlur: true }}
       name="TransactionHistory"
       component={TransactionHistory}
     />
 
     <Drawer.Screen
-      options={{ headerShown: false }}
+      options={{ headerShown: false, unmountOnBlur: true }}
       name="Cart"
       component={Cart}
     />

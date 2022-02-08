@@ -1,5 +1,10 @@
 import { createContext, useState } from "react";
-import { getTokenFor, loginAuth, registerAuth, save } from "./authentication.service";
+import {
+  getTokenFor,
+  loginAuth,
+  registerAuth,
+  save,
+} from "./authentication.service";
 
 export const AuthenticationContext = createContext({});
 
@@ -24,12 +29,12 @@ export const AuthenticationContextProvider = ({ children }: any) => {
       });
       loginAuth(stringData)
         .then(async (res: any) => {
-          console.log(res.data);
-          setAToken(res.data.aToken);
-          setRToken(res.data.rToken);
+          
 
-          await save("access_token", aToken);
-          await save("refresh_token", rToken);
+          // console.log(res.data.access_tokens);
+
+          await save("aToken", res.data.access_tokens);
+          await save("rToken", res.data.refresh_tokens);
 
           getToken(aToken);
           setIsAuthentication(true);
@@ -39,7 +44,6 @@ export const AuthenticationContextProvider = ({ children }: any) => {
           reject(err);
         });
     });
-
   };
 
   const onAuthRegister = (registerData: any) => {
@@ -57,19 +61,18 @@ export const AuthenticationContextProvider = ({ children }: any) => {
           reject(err);
         });
     });
-
   };
 
   return (
     <AuthenticationContext.Provider
-    value={{ 
+      value={{
         onAuthLogin,
         onAuthRegister,
         isAuthentication,
         getToken,
-    }}>
-
-        {children}
+      }}
+    >
+      {children}
     </AuthenticationContext.Provider>
-)
+  );
 };

@@ -18,7 +18,7 @@ export const Tabs = ({ tabs, children }: TabProps) => {
 
   const [index, setIndex] = useState(0);
   const selectedTab = tabs[index];
-  console.log(tabs);
+  // console.log(tabs);
   return (
     <Box>
       <Box flexDirection="row">

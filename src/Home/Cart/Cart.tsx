@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Dimensions, ScrollView, StyleSheet, View } from "react-native";
 import Svg, { Path } from "react-native-svg";
 import Header from "../../components/Header";
 import { HomeRoutes } from "../../components/Navigation";
 import theme, { aspectRatio, Box, Text } from "../../components/Theme";
+import { CartContext } from "../../utility/cart/cart.context";
 
 import { CartContainer } from "./CartContainer";
 import { Checkout } from "./Checkout";
@@ -13,12 +14,37 @@ const { width } = Dimensions.get("window");
 const height = 100 * aspectRatio;
 const d = "M 0 0 A 50 50 0 0 0 50 50 H 325 A 50 50 0 0 1 375 100 V 0 Z";
 
-const defaultItems = [{id: 1}, {id: 2}, {id: 3}, {id: 4}, {id: 5}, {id: 6}];
+const defaultItems = [
+  { id: 1 },
+  { id: 2 },
+  { id: 3 },
+  { id: 4 },
+  { id: 5 },
+  { id: 6 },
+];
+
 
 export const Cart = ({ navigation }: HomeRoutes<"Cart">) => {
-  const [items, setItems] = useState(defaultItems);
+  // const [items, setItems] = useState(defaultItems);
+
+  const [cart, setCart] = useState([]);
+
+  // console.lorg(cart)
+
+  const { getCart }: any = useContext(CartContext);
+
+  useEffect(async () => {
+    await getCart()
+    .then((res) =>{
+      setCart(res.data);
+    })
+    .catch((err:any) => {
+      // console.log(err);
+    })
+  }, []);
+
   return (
-    <CartContainer CheckoutComponent={Checkout}>
+    <CartContainer CheckoutComponent={Checkout} cart={cart}>
       <Box backgroundColor="primary">
         <Header
           dark
@@ -35,15 +61,17 @@ export const Cart = ({ navigation }: HomeRoutes<"Cart">) => {
           contentContainerStyle={{ paddingVertical: 50 * aspectRatio }}
           showsVerticalScrollIndicator={false}
         >
-          {items.map((item, i) => (
-            <Item
-              key={item.id}
-              onDelete={() => {
-                items.splice(i, 1);
-                setItems(items.concat());
-              }}
-            />
-          ))}
+          {cart &&
+            cart.map((item, i) => {
+              return (
+                <Item
+                  key={i}
+                  cart={item}
+                  onDelete={() => {
+                  }}
+                />
+              );
+            })}
         </ScrollView>
         <Box
           style={{
@@ -58,7 +86,7 @@ export const Cart = ({ navigation }: HomeRoutes<"Cart">) => {
             <Path d={d} fill={theme.colors.primary} />
           </Svg>
           <Text variant="title2" color="white" textAlign="center">
-            3 Items Added
+            {cart.length} Items Added
           </Text>
         </Box>
       </Box>

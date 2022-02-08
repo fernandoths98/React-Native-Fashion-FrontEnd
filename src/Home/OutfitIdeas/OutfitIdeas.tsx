@@ -42,8 +42,9 @@ export const OutfitIdeas = ({ navigation }: any) => {
   const setDataSearch = (searchResult) => {
     setData(searchResult);
     console.log(searchResult);
-  };
+    };
 
+    
   useEffect(async () => {
     const data = await resultProduct();
     console.log(data);

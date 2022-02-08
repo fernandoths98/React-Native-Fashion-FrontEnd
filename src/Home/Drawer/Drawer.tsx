@@ -1,9 +1,9 @@
 import { CommonActions, DrawerActions } from "@react-navigation/native";
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { Dimensions, Image } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import RoundedIconButton from "../../components/RoundedIconButton";
 import theme, { Box, Text } from "../../components/Theme";
+import { UserContext } from "../../utility/user/user.context";
 import DrawerItem, { DrawerItemsProps } from "./DrawerItem";
 
 const { width } = Dimensions.get("window");
@@ -49,7 +49,16 @@ const items: DrawerItemsProps[] = [
 
 
 const Drawer = ({navigation}: any) => {
+
+  
+
+  // const {userProfile, getUserId}:any = useContext(UserContext);
   // const insets = useSafeAreaInsets()
+
+  // useEffect(async() => {
+  //   await getUserId()
+  // }, [])
+
   return (
     <Box flex={1}>
       <Box flex={0.25} backgroundColor="white">
@@ -123,7 +132,7 @@ const Drawer = ({navigation}: any) => {
               Fernando Teguh
             </Text>
             <Text variant="body" textAlign="center">
-              fernandoteguh31@gmail.com
+            {/* {userProfile && userProfile.email} */}
             </Text>
           </Box>
           {items.map((item) => (

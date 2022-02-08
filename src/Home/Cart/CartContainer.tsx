@@ -22,9 +22,10 @@ interface CartProps {
   children: ReactNode;
   cartDetail: any
   CheckoutComponent: FC<{minHeight: number}>;
+  cart: any;
 }
 
-export const CartContainer = ({ children, cartDetail, CheckoutComponent }: CartProps) => {
+export const CartContainer = ({ children, cartDetail, CheckoutComponent, cart }: CartProps) => {
   const translateY = useSharedValue(0);
   const onGestureEvent = useAnimatedGestureHandler<{ y?: number }>({
     onStart: (event, ctx) => {
@@ -49,7 +50,7 @@ export const CartContainer = ({ children, cartDetail, CheckoutComponent }: CartP
   }));
   return (
     <Box flex={1} backgroundColor="bgYs">
-      <CheckoutComponent minHeight={minHeight} cartDetail={cartDetail}/>
+      <CheckoutComponent minHeight={minHeight} cart={cart} />
       <PanGestureHandler onGestureEvent={onGestureEvent}>
         <Animated.View
           style={[

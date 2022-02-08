@@ -15,9 +15,12 @@ const FavouriteButton = styled(TouchableOpacity)`
 export const FavoritesOutfits = ({outfit}: any) => {
     const { favourites, addToFavourites, removeFromFavourites }: any = useContext(FavouritesContext);
 
-    // const isFavouritesToggle = favourites.find((r) => r.id === outfit.id);
+    // const isFavouritesToggle = favourites.find((r:any) => r.id === outfit.id);
 
-    const isFavouritesToggle = useState(false)
+    // console.log(outfit);
+
+    const isFavouritesToggle = useState()
+    // console.log(isFavouritesToggle);
 
     return (
         <FavouriteButton 

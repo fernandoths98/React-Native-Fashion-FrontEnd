@@ -1,6 +1,6 @@
 import { SafeArea } from "../../components/utility/safe-area.components";
 import { OutfitInfo } from "./Outfit-info.components";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Card, IconButton, List } from "react-native-paper";
 import {
   ScrollView,
@@ -12,21 +12,52 @@ import {
 } from "react-native";
 import { Box, Text } from "../../components/Theme";
 import ButtonCart from "../../components/ButtonCart";
+import { CartContext } from "../../utility/cart/cart.context";
+import CheckboxGroup from "../../components/CheckboxGroup";
 
 export const SLIDER_WIDTH = Dimensions.get("window").width + 80;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.7);
 
 export const OutfitDetailScreen = ({ navigation, route }) => {
-  const [quantityCount, setQuantityCount] = useState(0);
+  const { outfit } = route.params;
+
+  const [quantityCount, setQuantityCount] = useState(1);
   const plusCount = () =>
     setQuantityCount((quantityCount) => quantityCount + 1);
   const minsCount = () =>
     setQuantityCount((quantityCount) => quantityCount - 1);
-  const { outfit } = route.params;
+
+  const [selectedSize, setSelectedSize] = useState(
+    outfit && outfit.item.size[0].size
+  );
+
+  const onChangesSize = (sizeString: string) => {
+    setSelectedSize(sizeString);
+  };
 
   const sizes = outfit.item.size;
 
-  console.log(sizes);
+  const dataSize = sizes.map(({ size }: any) => {
+    return { value: size, label: size };
+  });
+
+  console.log(outfit.item.image_product);
+
+  const { addToCart }: any = useContext(CartContext);
+
+  let postToCart = {
+    productId: outfit.item.id,
+    quantity: quantityCount,
+    size: selectedSize,
+    image: outfit.item.image_product[0].image_filename,
+    title_product: outfit.item.title_product,
+    price: outfit.item.price,
+  };
+
+  const onSubmitCart = () => {
+    addToCart(postToCart);
+    Alert.alert("Success", "Item added to cart");
+  };
 
   return (
     <Box flex={1} backgroundColor="bgYs">
@@ -35,7 +66,7 @@ export const OutfitDetailScreen = ({ navigation, route }) => {
           style={styles.cover}
           source={{
             uri:
-              "http://192.168.100.11:3000/api/product/image/" +
+              "http://192.168.1.5:3000/api/product/image/" +
               outfit.item.image_product[0].image_filename,
           }}
         />
@@ -47,20 +78,16 @@ export const OutfitDetailScreen = ({ navigation, route }) => {
           <Text variant="title2" marginLeft="m" marginTop="m">
             Rp. {outfit.item.price}{" "}
           </Text>
-          <Text variant="title2" marginLeft="m" marginTop="s">
-            Size :{" "}
-          </Text>
-          <Box flexDirection="row">
-            {sizes.map((size) => {
-              return (
-                <TouchableOpacity
-                  onPress={() => Alert.alert("Kamu memilih Size")}
-                  style={styles.roundButton1}
-                >
-                  <Text variant="title2">{size.size}</Text>
-                </TouchableOpacity>
-              );
-            })}
+          <Box >
+            <Text variant="title3" marginLeft="m" marginTop="s">Sizes available: </Text>
+            <Box marginLeft="m">
+              <CheckboxGroup
+                options={dataSize}
+                radio
+                defaultSelected={outfit.item.size[0].size}
+                callback={onChangesSize}
+              />
+            </Box>
           </Box>
 
           <Text variant="body" marginLeft="m" marginRight="m">
@@ -100,7 +127,7 @@ export const OutfitDetailScreen = ({ navigation, route }) => {
               marginRight="l"
             >
               <TouchableOpacity onPress={plusCount} style={styles.roundButton1}>
-                <Text variant="title2">-</Text>
+                <Text variant="title2">+</Text>
               </TouchableOpacity>
             </Box>
           </Box>
@@ -121,7 +148,7 @@ export const OutfitDetailScreen = ({ navigation, route }) => {
           </Box>
 
           <Box marginTop="m" marginBottom="l" marginRight="l">
-            <ButtonCart variant="cart" onPress={() => navigation.navigate("Cart")}>
+            <ButtonCart variant="cart" onPress={() => onSubmitCart()}>
               <IconButton icon="cart" color="#fff" />
             </ButtonCart>
           </Box>

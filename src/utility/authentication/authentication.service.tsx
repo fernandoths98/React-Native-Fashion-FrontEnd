@@ -18,12 +18,12 @@ export const save = async (key: any, value: any): Promise<any> => {
 }
 
 export const loginAuth = (authLogin: any) => {
-  console.log(authLogin);
+  // console.log(authLogin);
   return new Promise(async (resolve, reject) => {
     await instance
       .post("login", authLogin)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         resolve(res);
       })
       .catch((err) => {
@@ -38,7 +38,7 @@ export const registerAuth = (authRegister: any) => {
     await instance
       .post("register", authRegister)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         resolve(res);
       })
       .catch((err) => {

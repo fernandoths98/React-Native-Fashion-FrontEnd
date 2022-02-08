@@ -12,6 +12,9 @@ import { AppRoutes } from "./src/components/Navigation";
 import { ProductsContextProvider } from "./src/utility/product/product.context";
 import { AuthenticationContextProvider } from "./src/utility/authentication/authentication.context";
 import { FavouritesContextProvider } from "./src/utility/favourites/favourites.context";
+import { UserContextProvider } from "./src/utility/user/user.context";
+import { CartContextProvider } from "./src/utility/cart/cart.context";
+import { TransactionContextProvider } from "./src/utility/transaction/transaction.context";
 
 // const assets = [...authenticationAssets]
 
@@ -30,25 +33,31 @@ export default function App() {
       <LoadAssets {...{ fonts }}>
         <SafeAreaProvider>
           <AuthenticationContextProvider>
-            <FavouritesContextProvider>
-              <ProductsContextProvider>
-                <AppStack.Navigator>
-                  <AppStack.Screen
-                    options={{ headerShown: false }}
-                    name="Authentication"
-                    component={AuthenticationNavigator}
-                  />
+            <UserContextProvider>
+              <FavouritesContextProvider>
+                <CartContextProvider>
+                  <TransactionContextProvider>
+                    <ProductsContextProvider>
+                      <AppStack.Navigator>
+                        <AppStack.Screen
+                          options={{ headerShown: false }}
+                          name="Authentication"
+                          component={AuthenticationNavigator}
+                        />
 
-                  <AppStack.Screen
-                    options={{
-                      headerShown: false,
-                    }}
-                    name="Home"
-                    component={HomeNavigator}
-                  />
-                </AppStack.Navigator>
-              </ProductsContextProvider>
-            </FavouritesContextProvider>
+                        <AppStack.Screen
+                          options={{
+                            headerShown: false,
+                          }}
+                          name="Home"
+                          component={HomeNavigator}
+                        />
+                      </AppStack.Navigator>
+                    </ProductsContextProvider>
+                  </TransactionContextProvider>
+                </CartContextProvider>
+              </FavouritesContextProvider>
+            </UserContextProvider>
           </AuthenticationContextProvider>
         </SafeAreaProvider>
       </LoadAssets>
