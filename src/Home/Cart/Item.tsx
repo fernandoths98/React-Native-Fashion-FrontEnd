@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Image, View, StyleSheet } from "react-native";
 import { Card } from "react-native-paper";
 import theme, { Box, Text } from "../../components/Theme";
@@ -10,9 +10,23 @@ interface ItemProps {
 }
 
 export const Item = ({ onDelete, cart }: ItemProps) => {
+
+  const [qtyCart, setQtyCart] = useState(cart.quantity)
+  
+  const addQty = () => {
+    setQtyCart(qtyCart + 1)
+  }
+
+  const removeQty = () => {
+    if(qtyCart === 1) {
+      return
+    }
+    setQtyCart(qtyCart - 1)
+  }
+
   const height = 120 + theme.spacing.m * 2;
   return (
-    <SwipeableRows onDelete={onDelete} height={height}>
+    <SwipeableRows onDelete={onDelete} height={height} cartId={cart.id_cart} addQty={addQty} removeQty={removeQty}>
       <Box flexDirection="row" padding="m">
         <Box
           width={120}
@@ -24,18 +38,12 @@ export const Item = ({ onDelete, cart }: ItemProps) => {
           style={styles.cover}
           source={{
             uri:
-              "http://192.168.1.5:3000/api/product/image/" +
+              "http://192.168.0.8:3000/api/product/image/" +
               cart.image_product
           }}
           >
             
           </Card.Cover>
-          {/* <Image
-            source={{uri:
-              "http://192.168.1.8:3000/api/product/image/" +
-              cart.image_product}
-            }
-          /> */}
         </Box>
         <Box padding="m" flex={1} justifyContent="center">
           <Text variant="body">Size : {cart.size_product}</Text>
@@ -58,7 +66,7 @@ export const Item = ({ onDelete, cart }: ItemProps) => {
             }}
           >
             <Text variant="body" color="white">
-              x{cart.quantity}
+              x {qtyCart}
             </Text>
           </Box>
         </Box>

@@ -8,8 +8,6 @@ import { TransactionContext } from "../../utility/transaction/transaction.contex
 import Graph, { DataPoint } from "./Graph";
 import Transaction from "./Transaction";
 
-
-
 const footerHeight = Dimensions.get("window").width / 5.5;
 const useStyles = makeStyles((theme: Theme) => ({
   footer: {
@@ -30,17 +28,26 @@ const TransactionHistory = ({
   const { transaction, getTransactionHistory }: any =
     useContext(TransactionContext);
 
-    const [startDate, setStartDate] = useState()
+  const [totalSpent, setTotalSpent] = useState(0);
 
-    let totalSpent  = 0;
-    transaction.forEach((item: any) => {
-      totalSpent += item.total_price
-    })
+  const [startDate, setStartDate] = useState();
 
-  
+ 
 
-  useEffect(() => {
-    getTransactionHistory();
+  useEffect(async () => {
+     let totalSpent  = 0;
+    await getTransactionHistory()
+      .then(() => {
+        
+        transaction.forEach((item: any) => {
+          // console.log("transaksi", item);
+          totalSpent += item.total_price
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    setTotalSpent(totalSpent);
   }, []);
 
   return (
@@ -67,7 +74,7 @@ const TransactionHistory = ({
               <Text color="primary">All Time</Text>
             </Box>
           </Box>
-          
+
           <ScrollView
             contentContainerStyle={styles.scrollView}
             showsVerticalScrollIndicator={false}

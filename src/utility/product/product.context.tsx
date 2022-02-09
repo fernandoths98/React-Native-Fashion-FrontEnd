@@ -11,6 +11,7 @@ export const ProductsContextProvider = ({ children }: any) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
+
   const onSearch = (searchKeywords) => {
     return new Promise(async (resolve, reject) => {
       await searchProduct(searchKeywords)

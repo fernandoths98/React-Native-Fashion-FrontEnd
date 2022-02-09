@@ -30,7 +30,7 @@ export const ForgotPassword = ({
   } = useForm({ mode: "onChange", resolver: yupResolver(formSchema) });
 
   const onSubmit = (data: any) => {
-    console.log(data);
+    // console.log(data);
   };
 
   const footer = (

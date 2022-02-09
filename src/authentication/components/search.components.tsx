@@ -8,12 +8,20 @@ const SearchContainer = styled.View`
 `;
 
 export const Search = ({ isFavouritesToggle, onFavouritesToggle, setDataSearch }) => {
-  const { keywords, search } = useContext(ProductsContext);
+  const { keywords, search, resultProduct } = useContext(ProductsContext);
   const [searchKeywords, setSearchKeywords] = useState(keywords);
 
-  useEffect(() => {
-    setSearchKeywords(keywords);
-  }, [keywords]);
+  useEffect(async() => {
+    if (searchKeywords == '') {
+      resultProduct()
+      .then((res) => {
+        setDataSearch(res);
+        // console.log("search",res)
+      })
+    } else {
+      setDataSearch(await search(searchKeywords))
+    }
+  }, [searchKeywords]);
   return (
     <SearchContainer>
       <Searchbar
@@ -21,9 +29,9 @@ export const Search = ({ isFavouritesToggle, onFavouritesToggle, setDataSearch }
         onIconPress={onFavouritesToggle}
         placeholder="Search Outfit"
         value={searchKeywords}
-        onSubmitEditing={async () => {
-          setDataSearch(await search(searchKeywords))
-        }}
+        // onSubmitEditing={async () => {
+        //   setDataSearch(await search(searchKeywords))
+        // }}
         onChangeText={(text) => {
           setSearchKeywords(text);
         }}

@@ -29,3 +29,49 @@ export const getCartById = (access_tokens: any) => {
         });
     });
   };
+
+  export const editQuantityMethod = (access_tokens: any, idCart:number, data:any) => {
+    // console.log("data",data);
+    return new Promise(async (resolve, reject) => {
+      await instance
+        .patch(`cart/editQty/${idCart}`,data,
+        { headers: { Authorization: `Bearer ${access_tokens}` } })
+        .then((data: any) => {
+          // console.log(res);
+          resolve(data);
+        })
+        .catch((err: any) => {
+          reject(err);
+        });
+    });
+  };
+
+  export const getCartByIdMethod = (access_tokens: any, idCart:any) => {
+    return new Promise(async (resolve, reject) => {
+      await instance
+        .get(`cart/${idCart}`,
+        { headers: { Authorization: `Bearer ${access_tokens}` } })
+        .then((data: any) => {
+          // console.log(res);
+          resolve(data);
+        })
+        .catch((err: any) => {
+          reject(err);
+        });
+    })
+  }
+
+  export const deleteCartByIdMethod = (access_tokens: any, idCart:any) => {
+    return new Promise(async (resolve, reject) => {
+      await instance
+        .delete(`cart/${idCart}`,
+        { headers: { Authorization: `Bearer ${access_tokens}` } })
+        .then((data: any) => {
+          // console.log(res);
+          resolve(data);
+        })
+        .catch((err: any) => {
+          reject(err);
+        });
+    })
+  }

@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import React, { useContext, useState } from "react";
 import { Alert, ScrollView } from "react-native";
 import { Button } from "../../components";
@@ -21,6 +22,7 @@ const cards: CardModel[] = [
 interface CheckoutProps {
   minHeight: number;
   cart: any;
+  navigation: any;
 }
 
 interface LineItemProps {
@@ -46,13 +48,14 @@ const LineItem = ({ label, value }: LineItemProps) => {
 };
 
 export const Checkout = ({ minHeight, cart }: CheckoutProps) => {
+  const navigation = useNavigation()
+  
   const [selectedCard, setSelectedCard] = useState(cards[0].id);
 
-  const {userProfile}: any = useContext(UserContext)
-  const {addTransactionHistory}: any = useContext(TransactionContext)
+  const { userProfile }: any = useContext(UserContext);
+  const { addTransactionHistory }: any = useContext(TransactionContext);
 
-
-  console.log(cart);
+  // console.log(cart);
 
   const deliveryFee = 7500;
   let totalPay = 0;
@@ -65,11 +68,25 @@ export const Checkout = ({ minHeight, cart }: CheckoutProps) => {
 
   const order = {
     total_price: totalOrder,
-  }
+  };
 
-  const onSubmit = async() => {
-    await addTransactionHistory(order)
-  }
+  const onSubmit = async () => {
+    await addTransactionHistory(order);
+    Alert.alert(
+      "Success",
+      "Your order has been placed",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { 
+          text: "OK", 
+          onPress: () => navigation.navigate("TransactionHistory") }
+      ]
+    );
+  };
 
   return (
     <Box flex={1} backgroundColor="bgYs" style={{ paddingTop: minHeight }}>
@@ -93,8 +110,9 @@ export const Checkout = ({ minHeight, cart }: CheckoutProps) => {
           </Text>
           <Box flexDirection="row" opacity={0.5} paddingVertical="m">
             <Box flex={1}>
-              <Text color="background">{userProfile && userProfile.address}</Text>
-              
+              <Text color="background">
+                {userProfile && userProfile.address}
+              </Text>
             </Box>
             <Box justifyContent="center" alignItems="center">
               <Text color="background">Change</Text>

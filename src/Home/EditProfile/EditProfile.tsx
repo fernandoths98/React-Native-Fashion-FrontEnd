@@ -20,11 +20,8 @@ const tabs = [
 export const EditProfile = ({ navigation }: HomeRoutes<"EditProfile">) => {
   const schema = yup.object().shape({
     email: yup.string().email("Emailnya yang bener bos!").required(), //email("Pesan Email")
-    password: yup.string().min(8).max(32).required(),
-    Retypedpassword: yup
-      .string()
-      .required("Passwordnya harus sama yah!")
-      .oneOf([yup.ref("password")], "Passwordnya tidak sama!"),
+    fullName: yup.string().min(4).max(20).required(),
+    address: yup.string().min(10).max(30).required(),
   });
 
   const {
@@ -41,8 +38,7 @@ export const EditProfile = ({ navigation }: HomeRoutes<"EditProfile">) => {
     navigation.navigate("EditProfile");
   };
 
-  
-  const {userProfile, getUserId }: any = useContext(UserContext);
+  const { userProfile, getUserId }: any = useContext(UserContext);
 
   // console.log(userProfile);
 
@@ -122,41 +118,39 @@ export const EditProfile = ({ navigation }: HomeRoutes<"EditProfile">) => {
           />
 
           <Controller
-            name="password"
+            defaultValue={userProfile && userProfile.fullName}
+            name="fullName"
             control={control}
             render={({ field: { onChange, value } }) => (
               <TextInput
-                icon="lock"
-                placeholder="Enter your Password"
+                icon="user"
+                placeholder="Enter your Name"
                 onChangeText={(text) => onChange(text)}
                 value={value}
-                error={errors.password}
-                errorMessage={errors?.password?.message}
+                error={errors.fullName}
+                errorMessage={errors?.fullName?.message}
                 autoCapitalize="none"
-                autoCompleteType="password"
-                returnKeyLabel="go"
-                returnKeyType="go"
-                secureTextEntry
+                returnKeyLabel="next"
+                returnKeyType="next"
               />
             )}
           />
 
           <Controller
-            name="Retypedpassword"
+            defaultValue={userProfile && userProfile.address}
+            name="address"
             control={control}
             render={({ field: { onChange, value } }) => (
               <TextInput
-                icon="lock"
-                placeholder="Retyped your Password"
+                icon="map-pin"
+                placeholder="Enter your Address"
                 onChangeText={(text) => onChange(text)}
                 value={value}
-                error={errors.Retypedpassword}
-                errorMessage={errors?.Retypedpassword?.message}
+                error={errors.address}
+                errorMessage={errors?.address?.message}
                 autoCapitalize="none"
-                autoCompleteType="password"
-                returnKeyLabel="go"
-                returnKeyType="go"
-                secureTextEntry
+                returnKeyLabel="next"
+                returnKeyType="next"
               />
             )}
           />

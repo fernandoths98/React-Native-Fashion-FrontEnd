@@ -51,6 +51,8 @@ export const AuthenticationContextProvider = ({ children }: any) => {
       const stringData = JSON.stringify({
         email: registerData.email,
         password: registerData.password,
+        fullName: registerData.fullName,
+        address: registerData.address,
         retypedPasswords: registerData.retypedPasswords,
       });
       registerAuth(stringData)

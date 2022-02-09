@@ -31,7 +31,7 @@ export const Cart = ({ navigation }: HomeRoutes<"Cart">) => {
 
   // console.lorg(cart)
 
-  const { getCart }: any = useContext(CartContext);
+  const { getCart, deleteCartId }: any = useContext(CartContext);
 
   useEffect(async () => {
     await getCart()
@@ -68,6 +68,12 @@ export const Cart = ({ navigation }: HomeRoutes<"Cart">) => {
                   key={i}
                   cart={item}
                   onDelete={() => {
+                    const deleteCart = cart.filter(updateCart => {
+                      return updateCart.id_cart === updateCart.id_cart
+                    })
+                    setCart(deleteCart)
+                    // console.log("cart delete",deleteCart)
+                    deleteCartId(item.id_cart)
                   }}
                 />
               );

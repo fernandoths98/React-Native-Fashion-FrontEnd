@@ -33,7 +33,7 @@ export const loginAuth = (authLogin: any) => {
 };
 
 export const registerAuth = (authRegister: any) => {
-  console.log(authRegister);
+  // console.log(authRegister);
   return new Promise(async (resolve, reject) => {
     await instance
       .post("register", authRegister)

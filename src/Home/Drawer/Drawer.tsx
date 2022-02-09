@@ -40,24 +40,22 @@ const items: DrawerItemsProps[] = [
     icon: "log-out",
     label: "Logout",
     color: "secondary",
-    onPress: (navigation) => navigation.dispatch(CommonActions.reset({
-      index: 0,
-      routes: [{name: "Authentication"}]
-    }))
+    onPress: (navigation) =>
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: "Authentication" }],
+        })
+      ),
   },
 ];
 
+const Drawer = ({ navigation }: any) => {
+  const { userProfile, getUserId }: any = useContext(UserContext);
 
-const Drawer = ({navigation}: any) => {
-
-  
-
-  // const {userProfile, getUserId}:any = useContext(UserContext);
-  // const insets = useSafeAreaInsets()
-
-  // useEffect(async() => {
-  //   await getUserId()
-  // }, [])
+  useEffect(async () => {
+    await getUserId();
+  }, []);
 
   return (
     <Box flex={1}>
@@ -74,8 +72,8 @@ const Drawer = ({navigation}: any) => {
           justifyContent="space-between"
           paddingTop="s"
           padding="s"
-        > 
-          <RoundedIconButton 
+        >
+          <RoundedIconButton
             size={24}
             name="x"
             color="white"
@@ -83,7 +81,7 @@ const Drawer = ({navigation}: any) => {
             onPress={() => navigation.dispatch(DrawerActions.closeDrawer())}
           />
           <Text color="white">MY PROFILE</Text>
-          <RoundedIconButton 
+          <RoundedIconButton
             size={24}
             name="shopping-bag"
             color="white"
@@ -119,20 +117,20 @@ const Drawer = ({navigation}: any) => {
           padding="xl"
         >
           <Box
-          position="absolute"
-          left={DRAWER_WIDTH / 2 - 50}
-          top={-50}
-          backgroundColor="primary"
-          width={100}
-          height={100}
-          style={{ borderRadius: 50 }} 
+            position="absolute"
+            left={DRAWER_WIDTH / 2 - 50}
+            top={-50}
+            backgroundColor="primary"
+            width={100}
+            height={100}
+            style={{ borderRadius: 50 }}
           />
           <Box marginVertical="m" marginTop="m">
             <Text variant="title1" textAlign="center">
-              Fernando Teguh
+              {userProfile && userProfile.fullName}
             </Text>
             <Text variant="body" textAlign="center">
-            {/* {userProfile && userProfile.email} */}
+              {userProfile && userProfile.email}
             </Text>
           </Box>
           {items.map((item) => (

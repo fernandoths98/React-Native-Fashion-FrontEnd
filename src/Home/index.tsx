@@ -13,7 +13,7 @@ import { FavouritesBar } from "./Favorites/favourites-bar.components";
 const Drawer = createDrawerNavigator<HomeRoutes>();
 export const HomeNavigator = () => (
   <Drawer.Navigator
-    drawerContent={DrawerContent}
+    drawerContent={() => <DrawerContent/>}
     drawerStyle={{ width: DRAWER_WIDTH }}
   >
     <Drawer.Screen

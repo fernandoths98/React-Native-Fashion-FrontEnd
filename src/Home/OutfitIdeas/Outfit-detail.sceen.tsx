@@ -14,6 +14,8 @@ import { Box, Text } from "../../components/Theme";
 import ButtonCart from "../../components/ButtonCart";
 import { CartContext } from "../../utility/cart/cart.context";
 import CheckboxGroup from "../../components/CheckboxGroup";
+import RoundedIconButton from "../../components/RoundedIconButton";
+import { DrawerActions } from "@react-navigation/native";
 
 export const SLIDER_WIDTH = Dimensions.get("window").width + 80;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.7);
@@ -22,10 +24,17 @@ export const OutfitDetailScreen = ({ navigation, route }) => {
   const { outfit } = route.params;
 
   const [quantityCount, setQuantityCount] = useState(1);
+
   const plusCount = () =>
     setQuantityCount((quantityCount) => quantityCount + 1);
-  const minsCount = () =>
-    setQuantityCount((quantityCount) => quantityCount - 1);
+
+  const minsCount = () => {
+    if (quantityCount > 1) {
+      setQuantityCount((quantityCount) => quantityCount - 1);
+    } else {
+      setQuantityCount(1);
+    }
+  };
 
   const [selectedSize, setSelectedSize] = useState(
     outfit && outfit.item.size[0].size
@@ -41,7 +50,6 @@ export const OutfitDetailScreen = ({ navigation, route }) => {
     return { value: size, label: size };
   });
 
-  console.log(outfit.item.image_product);
 
   const { addToCart }: any = useContext(CartContext);
 
@@ -61,12 +69,37 @@ export const OutfitDetailScreen = ({ navigation, route }) => {
 
   return (
     <Box flex={1} backgroundColor="bgYs">
+      <Box
+        top={0}
+        left={0}
+        right={0}
+        bottom={0}
+        backgroundColor="bgYs"
+        flexDirection="row"
+        justifyContent="space-between"
+        paddingTop="s"
+        padding="s"
+      >
+        <RoundedIconButton
+          size={24}
+          color="white"
+          backgroundColor="bgYs"
+        />
+        <Text color="white">OUTFIT DETAIL</Text>
+        <RoundedIconButton
+          size={24}
+          name="shopping-bag"
+          color="white"
+          backgroundColor="bgYs"
+          onPress={() => navigation.navigate("Cart")}
+        />
+      </Box>
       <Box style={styles.card}>
         <Card.Cover
           style={styles.cover}
           source={{
             uri:
-              "http://192.168.1.5:3000/api/product/image/" +
+              "http://192.168.0.8:3000/api/product/image/" +
               outfit.item.image_product[0].image_filename,
           }}
         />
@@ -78,8 +111,10 @@ export const OutfitDetailScreen = ({ navigation, route }) => {
           <Text variant="title2" marginLeft="m" marginTop="m">
             Rp. {outfit.item.price}{" "}
           </Text>
-          <Box >
-            <Text variant="title3" marginLeft="m" marginTop="s">Sizes available: </Text>
+          <Box>
+            <Text variant="title3" marginLeft="m" marginTop="s">
+              Sizes available:{" "}
+            </Text>
             <Box marginLeft="m">
               <CheckboxGroup
                 options={dataSize}
